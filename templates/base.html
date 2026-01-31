@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Disserving Causes{% endblock %}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+
+<body>
+    <header>
+        <div class="container">
+            <nav>
+                <a href="{{ url_for('index') }}" class="logo">Disserving Causes</a>
+                <div class="nav-links">
+                    <a href="{{ url_for('projects') }}">Browse Projects</a>
+                    {% if session.get('user') %}
+                    <a href="{{ url_for('dashboard') }}">Dashboard</a>
+                    <a href="{{ url_for('logout') }}" class="btn btn-secondary">Logout</a>
+                    {% else %}
+                    <a href="{{ url_for('login') }}">Login</a>
+                    <a href="{{ url_for('register') }}" class="btn">Get Started</a>
+                    {% endif %}
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container">
+        <div class="flash-messages">
+            {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+            {% for category, message in messages %}
+            <div class="flash {{ category }}">{{ message }}</div>
+            {% endfor %}
+            {% endif %}
+            {% endwith %}
+        </div>
+
+        {% block content %}{% endblock %}
+    </main>
+
+    <footer class="container text-center mt-4" style="padding-bottom: 2rem; color: var(--text-secondary);">
+        <div class="mb-4">
+            <p style="margin-bottom: 1rem; font-weight: 500;">Supported By</p>
+            <a href="https://urostomyassociation.org.uk/" target="_blank">
+                <img src="{{ url_for('static', filename='ua_logo.png') }}" alt="Urostomy Association"
+                    style="height: 60px; width: auto;">
+            </a>
+        </div>
+        <p>&copy; 2025 Disserving Causes. Dissertations for deserving causes</p>
+    </footer>
+</body>
+
+</html>

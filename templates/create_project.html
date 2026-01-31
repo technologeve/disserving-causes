@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+
+{% block title %}Create Project - Dissertation Connect{% endblock %}
+
+{% block content %}
+<div style="max-width: 800px; margin: 0 auto;">
+    <h1>Create Project Proposal</h1>
+    <p class="mb-4">Describe the research you need help with. Be as specific as possible to attract the right students.
+    </p>
+
+    <div class="card">
+        <form action="{{ url_for('create_project') }}" method="POST">
+            <div class="form-group">
+                <label for="title">Project Title</label>
+                <input type="text" id="title" name="title" required
+                    placeholder="e.g., Analysis of Water Quality in Local Rivers">
+            </div>
+
+            <div class="form-group">
+                <label for="description">Project Description</label>
+                <textarea id="description" name="description" rows="5" required
+                    placeholder="Provide context about your organization and the specific problem you need solved..."></textarea>
+            </div>
+
+            <div class="form-group">
+                <label for="subject">Desired Degree Subject</label>
+                <input type="text" id="subject" name="subject" required
+                    placeholder="e.g., Environmental Science, Data Analytics">
+            </div>
+
+            <div class="form-group">
+                <label for="requirements">Requirements / Skills Needed</label>
+                <textarea id="requirements" name="requirements" rows="3"
+                    placeholder="e.g., Python, Statistics, Qualitative Interviewing"></textarea>
+            </div>
+
+            <div class="card-actions" style="justify-content: flex-end;">
+                <a href="{{ url_for('dashboard') }}" class="btn btn-secondary">Cancel</a>
+                <button type="submit" class="btn">Submit Proposal</button>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

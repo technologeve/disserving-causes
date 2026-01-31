@@ -1,0 +1,34 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="text-center" style="padding: 4rem 0;">
+    <h1 style="font-size: 3rem; margin-bottom: 1rem; color: var(--primary-color);">Make Your Dissertation Matter</h1>
+    <p style="font-size: 1.25rem; color: var(--text-secondary); max-width: 800px; margin: 0 auto 2rem;">
+        Connect with real-world charitable organizations to produce research that has a genuine impact.
+        Gain support from professors and contribute to causes you care about.
+    </p>
+    <div>
+        <a href="{{ url_for('register') }}" class="btn" style="padding: 1rem 2rem; font-size: 1.25rem;">Get Started
+            Today</a>
+        <a href="{{ url_for('projects') }}" class="btn btn-secondary"
+            style="padding: 1rem 2rem; font-size: 1.25rem; margin-left: 1rem;">Browse Projects</a>
+    </div>
+</div>
+
+<div class="grid mt-4">
+    <div class="card text-center">
+        <h3>For Students</h3>
+        <p>Find meaningful dissertation topics that solve real problems. Enhance your CV with practical experience.</p>
+    </div>
+    <div class="card text-center">
+        <h3>For Charities</h3>
+        <p>Access high-quality research and data analysis for free. Turn your organizational challenges into academic
+            projects.</p>
+    </div>
+    <div class="card text-center">
+        <h3>For Professors</h3>
+        <p>Connect with motivated students and external partners. Sponsor projects that align with your research
+            interests.</p>
+    </div>
+</div>
+{% endblock %}

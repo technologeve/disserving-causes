@@ -1,0 +1,70 @@
+{% extends 'base.html' %}
+
+{% block title %}Browse Projects - Dissertation Connect{% endblock %}
+
+{% block content %}
+<h1 class="mb-4">Available Projects</h1>
+
+<div class="card" style="padding: 1rem; margin-bottom: 2rem;">
+    <form action="{{ url_for('projects') }}" method="GET" style="display: flex; gap: 1rem; align-items: flex-end;">
+        <div style="flex-grow: 1;">
+            <label for="subject_filter" style="font-size: 0.9rem; margin-bottom: 0.25rem;">Filter by Subject</label>
+            <input type="text" id="subject_filter" name="subject" value="{{ request.args.get('subject', '') }}"
+                placeholder="e.g. Psychology">
+        </div>
+        {% if session.get('role') == 'student' %}
+        <div style="display: flex; align-items: center; padding-bottom: 0.75rem;">
+            <input type="checkbox" id="sponsored_filter" name="sponsored" value="true"
+                style="width: auto; margin-right: 0.5rem;" {% if request.args.get('sponsored') %}checked{% endif %}>
+            <label for="sponsored_filter" style="margin-bottom: 0; font-weight: normal;">Projects with Professors from
+                my Uni</label>
+        </div>
+        {% endif %}
+        <button type="submit" class="btn">Apply Filters</button>
+        {% if request.args %}
+        <a href="{{ url_for('projects') }}" class="btn btn-secondary">Clear</a>
+        {% endif %}
+    </form>
+</div>
+
+{% if projects %}
+<div class="grid">
+    {% for project in projects %}
+    <div class="card" style="display: flex; flex-direction: column;">
+        <h3>{{ project.title }}</h3>
+        <p style="font-size: 0.9rem; color: var(--primary-color);">{{ project.profiles.organization }}</p>
+        <p style="flex-grow: 1;">{{ project.description }}</p>
+
+        {% if project.requirements %}
+        <div style="margin-bottom: 1rem; font-size: 0.9rem;">
+            <strong>Skills:</strong> {{ project.requirements }}
+        </div>
+        {% endif %}
+
+        <div class="card-actions">
+            {% if session.get('role') in ['student', 'professor'] %}
+            <form action="{{ url_for('express_interest', project_id=project.id) }}" method="POST" style="width: 100%;">
+                <div class="form-group" style="margin-bottom: 0.5rem;">
+                    <input type="text" name="message" placeholder="Short message (e.g., 'I am interested because...')"
+                        required>
+                </div>
+                <button type="submit" class="btn" style="width: 100%;">Express Interest</button>
+            </form>
+            {% elif session.get('role') == 'charity' %}
+            <button disabled class="btn btn-secondary" style="width: 100%; opacity: 0.5; cursor: not-allowed;">Log in as
+                Student/Prof to Apply</button>
+            {% else %}
+            <a href="{{ url_for('login') }}" class="btn btn-secondary" style="width: 100%; text-align: center;">Login to
+                Connect</a>
+            {% endif %}
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% else %}
+<div class="text-center" style="padding: 4rem;">
+    <p class="text-secondary" style="font-size: 1.5rem;">No open projects found at the moment.</p>
+    <p>Check back later or <a href="{{ url_for('create_project') }}">create one</a> if you are a charity.</p>
+</div>
+{% endif %}
+{% endblock %}
