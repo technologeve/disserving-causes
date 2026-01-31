@@ -124,8 +124,14 @@ def dashboard():
     
     if role == 'charity':
         # Get my projects
-        projects = supabase.table('projects').select('*').eq('charity_id', user_id).execute()
-        context['projects'] = projects.data
+        # Fetch projects with all interests and the related user profiles
+        # Note: This relys on Supabase ability to do nested joins
+        try:
+            projects = supabase.table('projects').select('*, interests(*, profiles(*))').eq('charity_id', user_id).execute()
+            context['projects'] = projects.data
+        except Exception as e:
+            flash(f"Error fetching projects: {str(e)}", 'error')
+            context['projects'] = []
     elif role in ['student', 'professor']:
         # Get projects I've expressed interest in? Or simply show available projects.
         # For dashboard, maybe show "My Applications/Interests"

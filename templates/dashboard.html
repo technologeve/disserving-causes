@@ -23,30 +23,49 @@
         <p>{{ project.description }}</p>
         <div style="margin-top: auto;">
             <span class="badge">{{ project.status }}</span>
-            <!-- In a real app check for interests here -->
+            <span class="badge">{{ project.status }}</span>
         </div>
-    </div>
-    {% endfor %}
-</div>
-{% else %}
-<p class="text-secondary">You haven't created any projects yet.</p>
-{% endif %}
 
-{% else %}
-<h2>My Applications & Interests</h2>
-{% if my_interests %}
-<div class="grid mt-4">
-    {% for interest in my_interests %}
-    <div class="card">
-        <h3>{{ interest.projects.title }}</h3>
-        <p><strong>Your Message:</strong> {{ interest.message }}</p>
-        <span class="badge" style="background-color: #e0f2fe; color: #0284c7;">Interest Sent</span>
+        {% if project.interests %}
+        <div class="mt-4" style="border-top: 1px solid var(--border-color); padding-top: 1rem;">
+            <h4 style="font-size: 1rem; margin-bottom: 0.5rem;">Interested ({{ project.interests|length }})</h4>
+            <ul style="list-style: none;">
+                {% for interest in project.interests %}
+                <li
+                    style="background-color: var(--background-color); padding: 0.75rem; border-radius: var(--radius); margin-bottom: 0.5rem; font-size: 0.9rem;">
+                    <strong>{{ interest.profiles.full_name }}</strong> ({{ interest.profiles.role|capitalize }})<br>
+                    <a href="mailto:{{ interest.profiles.email }}">{{ interest.profiles.email }}</a><br>
+                    <span style="color: var(--text-secondary);">"{{ interest.message }}"</span>
+                </li>
+                {% endfor %}
+            </ul>
+        </div>
+        {% else %}
+        <div class="mt-4" style="border-top: 1px solid var(--border-color); padding-top: 1rem;">
+            <p style="font-size: 0.9rem; color: var(--text-secondary);">No interest expressed yet.</p>
+        </div>
+        {% endif %}
+        {% endfor %}
     </div>
-    {% endfor %}
-</div>
-{% else %}
-<p class="text-secondary">You haven't expressed interest in any projects yet.</p>
-{% endif %}
-{% endif %}
+    {% else %}
+    <p class="text-secondary">You haven't created any projects yet.</p>
+    {% endif %}
 
-{% endblock %}
+    {% else %}
+    <h2>My Applications & Interests</h2>
+    {% if my_interests %}
+    <div class="grid mt-4">
+        {% for interest in my_interests %}
+        <div class="card">
+            <h3>{{ interest.projects.title }}</h3>
+            <p><strong>Your Message:</strong> {{ interest.message }}</p>
+            <span class="badge" style="background-color: #e0f2fe; color: #0284c7;">Interest Sent</span>
+        </div>
+        {% endfor %}
+    </div>
+    {% else %}
+    <p class="text-secondary">You haven't expressed interest in any projects yet.</p>
+    {% endif %}
+    {% endif %}
+
+    {% endblock %}
